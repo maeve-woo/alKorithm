@@ -1,4 +1,4 @@
-package problem.search;
+package problem.basic.search;
 
 public class 새 {
 	public static void main(String[] args) {

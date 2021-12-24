@@ -1,4 +1,4 @@
-package problem.search;
+package problem.basic.search;
 
 import java.util.Comparator;
 import java.util.List;
