@@ -1,71 +1,46 @@
 package problem.basic.graphsearch;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DFS와BFS {
-	static List<Location> nodes;
-	static int nodesSize;
-	static boolean[] visited;
 	public static void main(String[] args) {
 		/**
 		 * level 1
 		 * https://www.acmicpc.net/problem/1260
 		 */
-		printDFSBFS(4, 1, List.of(new Location(1, 2), new Location(1, 3), new Location(1, 4), new Location(2, 4), new Location(3, 4)));
-		printDFSBFS(5, 3, List.of(new Location(5,4), new Location(5,2), new Location(1,2), new Location(3,4), new Location(3,1)));
+		int[][] graph = {{1, 2}, {1, 3}, {1, 4}, {2, 4}, {3, 4}};
+		printDFS(4, 5, 1, graph);
+		int[][] graph2 = {{5, 4}, {5, 2}, {1, 2}, {3, 4}, {3, 1}};
+		printDFS(5, 5, 3, graph2);
 	}
 
-	public static void printDFSBFS(int   n, int start, List<Location> nodes) {
-		DFS와BFS.nodes = nodes;
-		nodesSize = nodes.size();
-		visited = new boolean[1001];
-		dfs(start);
-		System.out.println();
-	}
-
-	public static void dfs(int start) {
-		visited[start] = true;
-
-		for (int i = 1; i <= nodesSize; i++) {
-			if (nodes.get(i - 1).isThereXY(start) && !visited[i]) {
-				System.out.print(start + ",");
-				dfs(i);
+	public static void printDFS(int n, int m, int v, int[][] graph) {
+		boolean[] visited = new boolean[n + 1];
+		int[][] copyGraph = graph.clone();
+		Arrays.sort(copyGraph, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				if (o1[0] >= o2[0]) {
+					return 1;
+				}
+				return -1;
 			}
+		});
+		System.out.println(">>sorted : " + Arrays.toString(copyGraph));
+
+		dfs(v, visited, copyGraph);
+	}
+
+	public static void dfs(int v, boolean[] visited, int[][] graph) {
+		visited[v] = true;
+		System.out.println(v);
+
+		for (int i: graph[v]) {
+			if (visited[i]) {
+				continue;
+			}
+			dfs(i, visited, graph);
 		}
-	}
-}
-
-class Location {
-	private int x;
-	private int y;
-
-	public Location(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	public boolean isThereXY(int xy) {
-		if (x == xy || y == xy) {
-			return true;
-		}
-		return false;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	@Override
-	public String toString() {
-		return "Location{" +
-				"x=" + x +
-				", y=" + y +
-				'}';
 	}
 }
 
